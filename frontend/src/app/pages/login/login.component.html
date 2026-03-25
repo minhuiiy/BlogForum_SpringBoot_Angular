@@ -1,0 +1,34 @@
+<div class="auth-container">
+  <div class="auth-box glass-effect">
+    <h2 class="auth-title gradient-text">Welcome Back</h2>
+    <p class="auth-subtitle">Sign in to BlogForum to continue</p>
+    
+    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" [(ngModel)]="form.username" required #username="ngModel" [ngClass]="{ 'is-invalid': f.submitted && username.errors }" />
+        <div *ngIf="username.errors && f.submitted" class="error-msg">Username is required</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="form.password" required minlength="6" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.errors }" />
+        <div *ngIf="password.errors && f.submitted" class="error-msg">Password must be at least 6 characters</div>
+      </div>
+      
+      <div class="form-group row-submit">
+        <button class="btn-primary auth-btn">Sign In</button>
+      </div>
+      
+      <div class="form-group">
+        <div *ngIf="f.submitted && isLoginFailed" class="alert-error">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </form>
+    
+    <div class="auth-footer">
+      Don't have an account? <a href="/register">Sign Up</a>
+    </div>
+  </div>
+</div>

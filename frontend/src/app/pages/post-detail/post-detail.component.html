@@ -1,0 +1,58 @@
+<div class="reading-container" *ngIf="post">
+  <div class="post-header">
+    <div class="post-meta-top">
+      <div class="author-info">
+        <div class="avatar-placeholder">{{post.author?.username?.charAt(0) | uppercase}}</div>
+        <div class="author-details">
+          <span class="author-name">{{ post.author?.username }}</span>
+          <span class="post-date">{{ post.createdAt | date:'mediumDate' }} • ⏳ 5 phút đọc</span>
+        </div>
+      </div>
+    </div>
+    <h1 class="post-title">{{ post.title }}</h1>
+  </div>
+
+  <div class="post-content">
+    <p>{{ post.content }}</p>
+  </div>
+  
+  <div class="post-actions">
+    <button class="action-btn">❤️ {{ post.likes }} Thích</button>
+    <button class="action-btn">💬 {{ comments.length }} Bình luận</button>
+    <button class="action-btn">👀 {{ post.views }} Lượt xem</button>
+  </div>
+
+  <div class="comments-section">
+    <h3>Bình luận ({{ comments.length }})</h3>
+    
+    <div class="comment-form" *ngIf="isLoggedIn; else loginPrompt">
+      <textarea [(ngModel)]="newCommentContent" placeholder="Viết bình luận của bạn..." rows="3"></textarea>
+      <button class="btn-primary" (click)="submitComment()">Gửi bình luận</button>
+    </div>
+    
+    <ng-template #loginPrompt>
+      <div class="login-prompt">
+        <p>Vui lòng <a routerLink="/login">Đăng nhập</a> để tham gia bình luận.</p>
+      </div>
+    </ng-template>
+
+    <div class="comment-list">
+      <div class="comment-card" *ngFor="let comment of comments">
+        <div class="comment-header">
+          <div class="author-info">
+            <div class="avatar-placeholder small">{{comment.user?.username?.charAt(0) | uppercase}}</div>
+            <span class="comment-author">{{ comment.user?.username }}</span>
+          </div>
+          <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
+        </div>
+        <div class="comment-body">
+          <p>{{ comment.content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="reading-container loading-state" *ngIf="!post">
+  <div class="spinner"></div>
+</div>

@@ -1,0 +1,52 @@
+<div class="home-container">
+  <div class="main-feed">
+    <div class="feed-header">
+      <h2 class="section-title">Dành cho bạn</h2>
+    </div>
+
+    <!-- Posts list -->
+    <div class="post-card" *ngFor="let post of posts">
+      <div class="post-meta-top">
+        <div class="author-info">
+          <div class="avatar-placeholder">{{post.author?.username?.charAt(0) | uppercase}}</div>
+          <span class="author-name">{{ post.author?.username }}</span>
+        </div>
+        <span class="post-date">{{ post.createdAt | date:'mediumDate' }}</span>
+      </div>
+      
+      <a [routerLink]="['/post', post.id]" class="post-title-link">
+        <h3 class="post-title">{{ post.title }}</h3>
+      </a>
+      
+      <p class="post-excerpt">{{ post.content | slice:0:180 }}...</p>
+      
+      <div class="post-meta-bottom">
+        <span class="post-stats">👀 {{ post.views }} lượt xem • ❤️ {{ post.likes }} người ủng hộ</span>
+      </div>
+    </div>
+    
+    <div *ngIf="posts.length === 0" class="empty-state">Chưa có bài viết nào trong ngày.</div>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-widget">
+      <h3 class="widget-title">Thảo luận nổi bật</h3>
+      <div class="question-item" *ngFor="let q of questions">
+        <a [routerLink]="['/question', q.id]" class="q-title">{{ q.title }}</a>
+        <div class="q-meta">💬 {{ q.answerCount || 0 }} bình luận • Lập bởi {{ q.author?.username }}</div>
+      </div>
+      <div *ngIf="questions.length === 0" class="empty-state" style="padding: 10px;">Chưa có câu hỏi nào.</div>
+    </div>
+    
+    <div class="sidebar-widget">
+      <h3 class="widget-title">Chủ đề (Tags)</h3>
+      <div class="tag-cloud">
+        <span class="tag">Nhật ký</span>
+        <span class="tag">Góc nhìn</span>
+        <span class="tag">Kỹ năng mềm</span>
+        <span class="tag">Nghề dev</span>
+        <span class="tag">Chia sẻ</span>
+      </div>
+    </div>
+  </div>
+</div>

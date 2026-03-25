@@ -1,0 +1,24 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a routerLink="/" class="fw-bold">BlogForum</a>
+    </div>
+    
+    <div class="nav-search">
+      <input type="text" placeholder="Tìm kiếm bài viết, tác giả, câu hỏi...">
+    </div>
+    
+    <div class="nav-auth">
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/login" class="nav-link">Đăng nhập</a>
+        <a routerLink="/register" class="btn-outline">Đăng ký</a>
+      </ng-container>
+      
+      <ng-container *ngIf="isLoggedIn">
+        <a routerLink="/create-post" class="btn-primary write-btn">✍️ Viết bài</a>
+        <span class="user-greeting">{{ username }}</span>
+        <button class="nav-link" (click)="logout()">Đăng xuất</button>
+      </ng-container>
+    </div>
+  </div>
+</nav>
