@@ -17,7 +17,7 @@ public class UserService {
     public User getCurrentUserProfile() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
     }
 
     @Transactional

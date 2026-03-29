@@ -50,10 +50,10 @@ public class FileController {
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            System.out.println("Could not determine file type.");
+            System.out.println("Không thể xác định loại tệp.");
         }
 
-        if(contentType == null) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
 

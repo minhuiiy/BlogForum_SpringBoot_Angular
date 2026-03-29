@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "posts")
 @Data
@@ -27,16 +29,17 @@ public class Post {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "post_tags", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @JsonIgnore
     @Builder.Default
     private Set<Tag> tags = new HashSet<>();
 

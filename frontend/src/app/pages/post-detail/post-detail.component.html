@@ -1,54 +1,104 @@
 <div class="reading-container" *ngIf="post">
-  <div class="post-header">
-    <div class="post-meta-top">
-      <div class="author-info">
-        <div class="avatar-placeholder">{{post.author?.username?.charAt(0) | uppercase}}</div>
-        <div class="author-details">
-          <span class="author-name">{{ post.author?.username }}</span>
-          <span class="post-date">{{ post.createdAt | date:'mediumDate' }} • ⏳ 5 phút đọc</span>
+  <!-- Post Container -->
+  <div class="post-detail-card">
+    <!-- Left Vote Column -->
+    <div class="post-votes">
+      <button class="vote-btn upvote">⬆️</button>
+      <span class="vote-count">{{ post.likes }}</span>
+      <button class="vote-btn downvote">⬇️</button>
+    </div>
+
+    <!-- Right Post Content -->
+    <div class="post-content-area">
+      <div class="post-meta-top">
+        <div class="community-info">
+          <span class="community-icon">r/</span>
+          <span class="community-name">r/BlogForum</span>
         </div>
+        <span class="dot-separator">•</span>
+        <span class="post-author">Posted by u/{{ post.author?.username }}</span>
+        <span class="post-date">{{ post.createdAt | date:'medium' }}</span>
       </div>
-    </div>
-    <h1 class="post-title">{{ post.title }}</h1>
-  </div>
 
-  <div class="post-content">
-    <p>{{ post.content }}</p>
-  </div>
-  
-  <div class="post-actions">
-    <button class="action-btn">❤️ {{ post.likes }} Thích</button>
-    <button class="action-btn">💬 {{ comments.length }} Bình luận</button>
-    <button class="action-btn">👀 {{ post.views }} Lượt xem</button>
-  </div>
+      <h1 class="post-title">{{ post.title }}</h1>
 
-  <div class="comments-section">
-    <h3>Bình luận ({{ comments.length }})</h3>
-    
-    <div class="comment-form" *ngIf="isLoggedIn; else loginPrompt">
-      <textarea [(ngModel)]="newCommentContent" placeholder="Viết bình luận của bạn..." rows="3"></textarea>
-      <button class="btn-primary" (click)="submitComment()">Gửi bình luận</button>
-    </div>
-    
-    <ng-template #loginPrompt>
-      <div class="login-prompt">
-        <p>Vui lòng <a routerLink="/login">Đăng nhập</a> để tham gia bình luận.</p>
+      <div class="post-content-body">
+        <p>{{ post.content }}</p>
       </div>
-    </ng-template>
+      
+      <div class="post-action-bar">
+        <button class="action-btn">
+          <span class="action-icon">💬</span>
+          <span class="action-text">{{ comments.length }} Comments</span>
+        </button>
+        <button class="action-btn">
+          <span class="action-icon">🔁</span>
+          <span class="action-text">Share</span>
+        </button>
+        <button class="action-btn">
+          <span class="action-icon">🔖</span>
+          <span class="action-text">Save</span>
+        </button>
+      </div>
 
-    <div class="comment-list">
-      <div class="comment-card" *ngFor="let comment of comments">
-        <div class="comment-header">
-          <div class="author-info">
-            <div class="avatar-placeholder small">{{comment.user?.username?.charAt(0) | uppercase}}</div>
-            <span class="comment-author">{{ comment.user?.username }}</span>
+      <!-- Add Comment Form -->
+      <div class="comment-form-section">
+        <p class="comment-as" *ngIf="isLoggedIn">Comment as <span>u/{{ currentUser?.username }}</span></p>
+        
+        <div class="comment-form" *ngIf="isLoggedIn; else loginPrompt">
+          <textarea [(ngModel)]="newCommentContent" placeholder="What are your thoughts?" rows="3"></textarea>
+          <div class="form-actions">
+            <button class="btn-primary" (click)="submitComment()">Comment</button>
           </div>
-          <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
         </div>
-        <div class="comment-body">
-          <p>{{ comment.content }}</p>
+        
+        <ng-template #loginPrompt>
+          <div class="login-prompt">
+            <h3 class="login-title">Log in or sign up to leave a comment</h3>
+            <div class="login-actions">
+              <a routerLink="/login" class="btn-outline">Log In</a>
+              <a routerLink="/register" class="btn-primary">Sign Up</a>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Comments List -->
+      <div class="comments-section">
+        <div class="comment-thread" *ngFor="let comment of comments">
+          <div class="comment-avatar">
+            <div class="avatar-placeholder small">{{comment.user?.username?.charAt(0) | uppercase}}</div>
+            <div class="thread-line"></div>
+          </div>
+          
+          <div class="comment-content-block">
+            <div class="comment-header">
+              <span class="comment-author">u/{{ comment.user?.username }}</span>
+              <span class="dot-separator">•</span>
+              <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
+            </div>
+            
+            <div class="comment-body">
+              <p>{{ comment.content }}</p>
+            </div>
+            
+            <div class="comment-action-bar">
+              <button class="vote-btn upvote">⬆️</button>
+              <span class="comment-vote-score">1</span>
+              <button class="vote-btn downvote">⬇️</button>
+              <button class="action-btn">
+                <span class="action-icon">💬</span>
+                <span class="action-text">Reply</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="comments.length === 0" class="empty-comments">
+          <p>No comments yet. Be the first to share what you think!</p>
         </div>
       </div>
+
     </div>
   </div>
 </div>

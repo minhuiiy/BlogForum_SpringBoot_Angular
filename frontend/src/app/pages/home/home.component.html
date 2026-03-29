@@ -1,52 +1,124 @@
 <div class="home-container">
   <div class="main-feed">
-    <div class="feed-header">
-      <h2 class="section-title">Dành cho bạn</h2>
+    <!-- Create Post Bar -->
+    <div class="create-post-bar">
+      <div class="avatar-placeholder">👤</div>
+      <input type="text" placeholder="Create Post" [routerLink]="['/create-post']" readonly>
+      <button class="icon-btn" [routerLink]="['/create-post']">🖼️</button>
+      <button class="icon-btn" [routerLink]="['/create-post']">🔗</button>
     </div>
 
     <!-- Posts list -->
     <div class="post-card" *ngFor="let post of posts">
-      <div class="post-meta-top">
-        <div class="author-info">
-          <div class="avatar-placeholder">{{post.author?.username?.charAt(0) | uppercase}}</div>
-          <span class="author-name">{{ post.author?.username }}</span>
-        </div>
-        <span class="post-date">{{ post.createdAt | date:'mediumDate' }}</span>
+      <!-- Vote column -->
+      <div class="post-votes">
+        <button class="vote-btn upvote">⬆️</button>
+        <span class="vote-count">{{ post.likes }}</span>
+        <button class="vote-btn downvote">⬇️</button>
       </div>
-      
-      <a [routerLink]="['/post', post.id]" class="post-title-link">
-        <h3 class="post-title">{{ post.title }}</h3>
-      </a>
-      
-      <p class="post-excerpt">{{ post.content | slice:0:180 }}...</p>
-      
-      <div class="post-meta-bottom">
-        <span class="post-stats">👀 {{ post.views }} lượt xem • ❤️ {{ post.likes }} người ủng hộ</span>
+
+      <!-- Content column -->
+      <div class="post-content-area">
+        <div class="post-meta-top">
+          <div class="community-info">
+            <span class="community-icon">r/</span>
+            <span class="community-name">r/general</span>
+          </div>
+          <span class="dot-separator">•</span>
+          <span class="post-author">Posted by u/{{ post.author?.username }}</span>
+          <span class="post-date">{{ post.createdAt | date:'medium' }}</span>
+        </div>
+        
+        <a [routerLink]="['/post', post.id]" class="post-title-link">
+          <h3 class="post-title">{{ post.title }}</h3>
+        </a>
+        
+        <div class="post-excerpt">
+          <p>{{ post.content | slice:0:180 }}<span *ngIf="post.content?.length > 180">...</span></p>
+        </div>
+        
+        <div class="post-action-bar">
+          <a [routerLink]="['/post', post.id]" class="action-btn">
+            <span class="action-icon">💬</span>
+            <span class="action-text">Comments</span>
+          </a>
+          <button class="action-btn">
+            <span class="action-icon">🔁</span>
+            <span class="action-text">Share</span>
+          </button>
+          <button class="action-btn">
+            <span class="action-icon">🔖</span>
+            <span class="action-text">Save</span>
+          </button>
+        </div>
       </div>
     </div>
     
-    <div *ngIf="posts.length === 0" class="empty-state">Chưa có bài viết nào trong ngày.</div>
+    <div *ngIf="posts.length === 0" class="empty-state">No posts available yet. Create one!</div>
   </div>
 
   <div class="sidebar">
-    <div class="sidebar-widget">
-      <h3 class="widget-title">Thảo luận nổi bật</h3>
-      <div class="question-item" *ngFor="let q of questions">
-        <a [routerLink]="['/question', q.id]" class="q-title">{{ q.title }}</a>
-        <div class="q-meta">💬 {{ q.answerCount || 0 }} bình luận • Lập bởi {{ q.author?.username }}</div>
+    <div class="sidebar-widget about-community">
+      <div class="widget-header-bg"></div>
+      <div class="widget-content">
+        <div class="community-title-row">
+          <span class="big-community-icon">r/</span>
+          <h3 class="widget-title">r/BlogForum</h3>
+        </div>
+        <p class="community-description">
+          The official community for BlogForum. Share thoughts, ask questions, and connect with developers worldwide.
+        </p>
+        <div class="community-stats">
+          <div class="stat">
+            <div class="stat-num">1.2k</div>
+            <div class="stat-label">Members</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">56</div>
+            <div class="stat-label">Online</div>
+          </div>
+        </div>
+        <a routerLink="/create-post" class="btn-primary block-btn">Create Post</a>
       </div>
-      <div *ngIf="questions.length === 0" class="empty-state" style="padding: 10px;">Chưa có câu hỏi nào.</div>
     </div>
     
+    <div class="sidebar-widget rules-widget">
+      <h3 class="widget-title rules-title">r/BlogForum Rules</h3>
+      <ol class="rules-list">
+        <li>Be respectful and civil.</li>
+        <li>No spam or self-promotion.</li>
+        <li>Check for duplicates before posting.</li>
+      </ol>
+    </div>
+
+    <!-- Recent Questions mimicking Reddit Topics/Links -->
     <div class="sidebar-widget">
-      <h3 class="widget-title">Chủ đề (Tags)</h3>
-      <div class="tag-cloud">
-        <span class="tag">Nhật ký</span>
-        <span class="tag">Góc nhìn</span>
-        <span class="tag">Kỹ năng mềm</span>
-        <span class="tag">Nghề dev</span>
-        <span class="tag">Chia sẻ</span>
+      <h3 class="widget-title">Recent Questions</h3>
+      <div class="question-item" *ngFor="let q of questions">
+        <a [routerLink]="['/']" class="q-title">{{ q.title }}</a>
+        <div class="q-meta">💬 {{ q.answerCount || 0 }} comments</div>
+      </div>
+      <div *ngIf="questions.length === 0" class="empty-state" style="padding: 10px;">No questions yet.</div>
+    </div>
+    
+    <!-- Tech News via Hacker News API -->
+    <div class="sidebar-widget">
+      <h3 class="widget-title">Trending Tech News</h3>
+      <div *ngIf="loadingNews" class="news-loading" style="padding: 12px; text-align: center; color: var(--text-meta);">
+        Loading top stories...
+      </div>
+      <div *ngIf="!loadingNews && techNews.length > 0">
+        <div class="question-item news-item" *ngFor="let news of techNews">
+          <a [href]="news.url" target="_blank" class="q-title news-title">{{ news.title }}</a>
+          <div class="q-meta news-meta">
+            ⬆️ {{ news.score }} points • by {{ news.by }}
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!loadingNews && techNews.length === 0" class="empty-state" style="padding: 10px;">
+        Could not load news.
       </div>
     </div>
+
   </div>
 </div>
