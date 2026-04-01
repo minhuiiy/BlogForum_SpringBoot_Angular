@@ -9,3 +9,6 @@
 <main class="main-content">
   <router-outlet></router-outlet>
 </main>
+
+<!-- ĐÂY CHÍNH LÀ REDDIT LOGIN POPUP -->
+<app-login *ngIf="authModalService.isOpen$ | async"></app-login>

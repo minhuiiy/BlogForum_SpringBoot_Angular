@@ -21,4 +21,8 @@ export class BlogService {
   createPost(postData: any): Observable<any> {
     return this.http.post(API_URL, postData);
   }
+
+  votePost(id: number): Observable<any> {
+    return this.http.post(`${API_URL}/${id}/vote`, {});
+  }
 }

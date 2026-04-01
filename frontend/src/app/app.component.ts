@@ -3,11 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { WebSocketService } from './_services/websocket.service';
+import { AuthModalService } from './_services/auth-modal.service';
+import { LoginComponent } from './pages/login/login.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, CommonModule],
+  imports: [RouterOutlet, NavbarComponent, CommonModule, LoginComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -15,7 +17,10 @@ export class AppComponent implements OnInit {
   title = 'frontend';
   toastMessage: string | null = null;
 
-  constructor(private webSocketService: WebSocketService) {}
+  constructor(
+    private webSocketService: WebSocketService,
+    public authModalService: AuthModalService
+  ) {}
 
   ngOnInit() {
     this.webSocketService.connect();

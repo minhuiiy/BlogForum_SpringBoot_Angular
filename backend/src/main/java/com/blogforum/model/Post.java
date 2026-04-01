@@ -43,6 +43,12 @@ public class Post {
     @Builder.Default
     private Set<Tag> tags = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonIgnore
+    @Builder.Default
+    private Set<User> likedByUsers = new HashSet<>();
+
     @Builder.Default
     private int views = 0;
 

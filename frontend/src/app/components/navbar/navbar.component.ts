@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { TokenStorageService } from '../../_services/token-storage.service';
+import { AuthModalService } from '../../_services/auth-modal.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,11 @@ export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   username?: string;
 
-  constructor(private tokenStorageService: TokenStorageService, private router: Router) { }
+  constructor(
+    private tokenStorageService: TokenStorageService, 
+    private router: Router,
+    private authModalService: AuthModalService
+  ) { }
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -22,6 +27,10 @@ export class NavbarComponent implements OnInit {
       const user = this.tokenStorageService.getUser();
       this.username = user.username;
     }
+  }
+
+  openLoginModal(): void {
+    this.authModalService.open();
   }
 
   logout(): void {

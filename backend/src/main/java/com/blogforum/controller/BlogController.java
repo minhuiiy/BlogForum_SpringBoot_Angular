@@ -54,4 +54,10 @@ public class BlogController {
     public ResponseEntity<List<Post>> searchPosts(@RequestParam String query) {
         return ResponseEntity.ok(blogService.searchPosts(query));
     }
+
+    @PostMapping("/{id}/vote")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<Post> likePost(@PathVariable Long id) {
+        return ResponseEntity.ok(blogService.likePost(id));
+    }
 }

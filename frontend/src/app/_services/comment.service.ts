@@ -18,7 +18,7 @@ export class CommentService {
     return this.http.post(`${API_URL}${postId}/comments`, { content, parentId });
   }
 
-  deleteComment(postId: number, commentId: number): Observable<any> {
-    return this.http.delete(`${API_URL}${postId}/comments/${commentId}`);
+  deleteComment(commentId: number): Observable<any> {
+    return this.http.delete(`/api/v1/comments/${commentId}`);
   }
 }

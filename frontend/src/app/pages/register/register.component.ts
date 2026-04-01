@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
         }, 2000);
       },
       error: err => {
-        this.errorMessage = err.error.message || 'Registration failed';
+        this.errorMessage = err.error.message || 'Đăng ký thất bại';
         this.isSignUpFailed = true;
       }
     });

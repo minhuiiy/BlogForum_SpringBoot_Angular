@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BlogService {
@@ -63,5 +64,25 @@ public class BlogService {
 
     public List<Post> searchPosts(String query) {
         return postRepository.findByTitleContainingIgnoreCase(query);
+    }
+
+    @Transactional
+    public Post likePost(Long postId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found: " + postId));
+
+        if (post.getLikedByUsers().contains(user)) {
+            post.getLikedByUsers().remove(user);
+            post.setLikes(Math.max(0, post.getLikes() - 1));
+        } else {
+            post.getLikedByUsers().add(user);
+            post.setLikes(post.getLikes() + 1);
+        }
+
+        return postRepository.save(post);
     }
 }

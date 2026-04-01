@@ -10,18 +10,18 @@
     <div class="nav-search">
       <div class="search-input-wrapper">
         <span class="search-icon">🔍</span>
-        <input type="text" placeholder="Search BlogForum...">
+        <input type="text" placeholder="Tìm kiếm trên BlogForum...">
       </div>
     </div>
     
     <div class="nav-auth">
       <ng-container *ngIf="!isLoggedIn">
-        <a routerLink="/register" class="btn-secondary">Get App</a>
-        <a routerLink="/login" class="btn-primary">Log In</a>
+        <a routerLink="/register" class="btn-secondary">Tải App</a>
+        <a class="btn-primary" (click)="openLoginModal()" style="cursor: pointer">Đăng Nhập</a>
       </ng-container>
       
       <ng-container *ngIf="isLoggedIn">
-        <a routerLink="/create-post" class="icon-btn" title="Create Post">➕</a>
+        <a routerLink="/create-post" class="icon-btn" title="Tạo bài viết">➕</a>
         <div class="user-dropdown">
           <div class="user-greeting">👤 {{ username }} ▼</div>
           <div class="dropdown-content">
