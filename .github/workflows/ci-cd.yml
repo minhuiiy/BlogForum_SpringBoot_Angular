@@ -10,6 +10,8 @@ jobs:
   build-backend:
     name: Build backend (Spring Boot)
     runs-on: ubuntu-latest
+    env:
+      DB_HOST: 127.0.0.1
     services:
       mysql-db:
         image: mysql:8.0
