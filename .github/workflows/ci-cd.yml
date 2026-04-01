@@ -54,7 +54,7 @@ jobs:
       run: mvn -B package --file pom.xml -DskipTests
 
     - name: Run Tests
-      run: mvn test
+      run: mvn test -Dspring.datasource.url="jdbc:mysql://127.0.0.1:3307/blogforum_db?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true"
 
   build-frontend:
     name: Build frontend (Angular)
