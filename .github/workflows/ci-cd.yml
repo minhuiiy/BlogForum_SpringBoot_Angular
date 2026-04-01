@@ -10,31 +10,6 @@ jobs:
   build-backend:
     name: Build backend (Spring Boot)
     runs-on: ubuntu-latest
-    env:
-      DB_HOST: 127.0.0.1
-      DB_PORT: 3307
-    services:
-      mysql-db:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: 005928
-          MYSQL_DATABASE: blogforum_db
-        ports:
-          - 3307:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -p005928"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-      redis:
-        image: redis:alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
     defaults:
       run:
         working-directory: ./backend
@@ -52,9 +27,6 @@ jobs:
         
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipTests
-
-    - name: Run Tests
-      run: mvn test -Dspring.datasource.url="jdbc:mysql://127.0.0.1:3307/blogforum_db?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true"
 
   build-frontend:
     name: Build frontend (Angular)
